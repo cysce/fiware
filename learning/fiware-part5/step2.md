@@ -1,77 +1,77 @@
-[STEP1へ](step1.md)
+[SIr al paso 1](step1.md)
 
-# 2-1 FIWARE-Serviceを指定したEntityの登録
+# 2-1 Registro de Entity especificando Fiware-Service
 
-Orionでは"Fiware-Service"というHTTPヘッダーでテナント名を設定することができます。
+En Orion se puede establecer el nombre del tenant mediante la cabecera HTTP "Fiware-Service".
 
-今回登録するRoom1 Entityを確認します。
+Comprueba la Entity Room1 que vamos a registrar:
 
 `cat fiware-part5/assets/example-ngsi-room1.json`
 
-以下のコマンドで**tenant_a**にRoom1 Entityを登録します。
+Registra la Entity Room1 en **tenant_a** con el siguiente comando:
 
 `curl localhost:1026/v2/entities -s -S -H 'Fiware-Service: tenant_a' -H 'Content-Type: application/json' -X POST -d @fiware-part5/assets/example-ngsi-room1.json`
 
-
-以下のコマンドでEntity一覧を取得します。
+Obtén la lista de Entities con el siguiente comando:
 
 `curl localhost:1026/v2/entities | jq`
 
-デフォルトのテナントでは何も取得されません。
+En el tenant por defecto no se obtendrá nada.
 
-以下のコマンドでFiware-Serviceを指定して取得します。
+Obtén las Entities especificando Fiware-Service con el siguiente comando:
 
 `curl localhost:1026/v2/entities -H 'Fiware-Service: tenant_a' | jq`
 
-Entityの更新や削除も同様にFiware-Serviceを指定して行うことができます。
-また、Subscription APIなど他のAPIやOrion以外の他のコンポーネントもFiware-Serviceに対応しているものが多くあります。
+Las actualizaciones o eliminaciones de Entities también se pueden realizar especificando Fiware-Service.
+Además, muchas otras APIs y componentes (por ejemplo la Subscription API) también soportan Fiware-Service.
 
 
-# 2-2 Fiware-ServicePathによるスコープについて
-Fiware-Serviceのマルチテナンシーとは別にFiware-ServicePathによってスコープを指定することができます。
+# 2-2 Sobre el scope con Fiware-ServicePath
 
-分野を分けたり、地域を分けたりなど様々な使い方をすることができます。
+Además de la multitenencia mediante Fiware-Service, se puede especificar un scope mediante Fiware-ServicePath.
 
-スコープは以下のようにツリー構造によって表現することができます。
+Puede usarse para separar áreas, regiones, etc.
 
-例： /tokyo/shinjuku/office
+El scope puede representarse como una estructura de árbol, por ejemplo:
+
+Ejemplo: /tokyo/shinjuku/office
 
 
-# 2-3 FIWARE-ServicePathを指定したEntityの登録
+# 2-3 Registro de Entity especificando Fiware-ServicePath
 
-Orionでは"Fiware-ServicePath"というHTTPヘッダーでテナント名を設定することができます。
+En Orion se puede establecer el scope mediante la cabecera HTTP "Fiware-ServicePath".
 
 `curl localhost:1026/v2/entities -s -S -H 'Fiware-ServicePath: /tokyo/shinjuku/office' -H 'Content-Type: application/json' -X POST -d @fiware-part5/assets/example-ngsi-room1.json`
 
-以下のコマンドでEntity一覧を取得します。  
-デフォルトのスコープ(/)では全てのスコープが取得されます。
+Obtén la lista de Entities con el siguiente comando.  
+En el scope por defecto (/) se obtendrán Entities de todos los scopes:
 
 `curl localhost:1026/v2/entities | jq`
 
-
-別のスコープを指定したコマンドを実行します。  
-スコープが異なる場合はEntityが見えません。
+Ejecuta un comando especificando otro scope.  
+Si el scope es distinto, no verás la Entity:
 
 `curl localhost:1026/v2/entities -H 'Fiware-ServicePath: /tokyo/shibuya/office' | jq`
 
-以下のコマンドでFiware-ServicePathを指定して取得できます。
+Puedes obtener las Entities del scope especificado con:
 
 `curl localhost:1026/v2/entities -H 'Fiware-ServicePath: /tokyo/shinjuku/office' | jq`
 
+Además, Fiware-ServicePath se puede usar conjuntamente con Fiware-Service.
 
-また、Fiware-ServicePathはFiware-Serviceと併用して使うこともできます。
 
-# 2-4 コンテナの停止・削除
-起動したコンテナを停止・削除します。
+# 2-4 Detención y eliminación de contenedores
 
-1. 以下コマンドでコンテナを停止・削除します。
+Detén y elimina los contenedores que iniciaste.
+
+1. Ejecuta el siguiente comando para detener y eliminar los contenedores:
 
    `docker compose -f fiware-part5/assets/docker-compose.yml down`
 
-2. 完了したら以下のコマンドでコンテナが停止・削除されていることを確認します。
+2. Una vez completado, verifica que los contenedores se hayan detenido y eliminado con el siguiente comando:
 
    `docker compose -f fiware-part5/assets/docker-compose.yml ps -a`
 
-   一覧に何も表示されていなければ成功です。
+   Si la lista no muestra nada, significa que fue exitoso.
 
-[終了](finish.md)
+[Finalizar](finish.md)
