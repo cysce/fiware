@@ -1,4 +1,4 @@
-FIWARE Orionのログ設定について学習していきます。
+Aprenderemos sobre la configuración de registros de FIWARE Orion.
 
-[STEP1へ](step1.md)  
-[TOPへ](../README.md)
+[Ir al paso 1](step1.md)  
+[Ir al inicio](../README.md)

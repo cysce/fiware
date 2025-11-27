@@ -1,16 +1,16 @@
-[STEP1へ](step1.md)
+[Ir al paso 1](step1.md)
 
-# 2-1 Registrationの設定前の確認
+# 2-1 Comprobación antes de configurar la Registration
 
-OrionAに対して、以下のコマンドを実行し、データが取得できないことを確認します。
+Ejecuta el siguiente comando contra OrionA y verifica que no se obtienen datos:
 
 ```
 curl localhost:1026/v2/entities/Room1/attrs/pressure?type=Room -s -S -H 'Accept: application/json' | jq
 ```
 
-# 2-2 Registrationの設定
+# 2-2 Configuración de la Registration
 
-以下のコマンドでOrionAに対して、Registrationの設定を行います。
+Configura la Registration en OrionA con el siguiente comando:
 
 ```json
 curl localhost:1026/v2/registrations -s -S -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST -d @- <<EOF
@@ -36,42 +36,39 @@ curl localhost:1026/v2/registrations -s -S -H 'Content-Type: application/json' -
 EOF
 ```
 
-# 2-3 OrionAからOrionBへの転送
+# 2-3 Reenvío de OrionA a OrionB
 
-Registrationの設定完了後に、OrionAに対して、以下のコマンドを再度実行します。
+Tras completar la configuración de la Registration, vuelve a ejecutar el siguiente comando contra OrionA:
 
 ```
 curl localhost:1026/v2/entities/Room1/attrs/pressure?type=Room -s -S -H 'Accept: application/json' | jq
 ```
 
-クエリがOrionBに転送され、データが取得されることを確認します。
+Verifica que la consulta se reenvía a OrionB y que se obtienen los datos.
 
 ![ResponseBody](./assets/6-4.png)
 
-# 2-4 Registrationの削除
+# 2-4 Eliminación de la Registration
 
-Orionには`PATCH /v2/registration/<id>`は実装されていないため、Registrationを直接更新することはできません。更新する場合はRegistrationを削除して再作成する必要があります。
+Orion no implementa `PATCH /v2/registration/<id>`, por lo que no es posible actualizar una Registration directamente. Para modificarla hay que eliminarla y volver a crearla.
 
-以下の手順で、Registrationを削除します。
+Pasos para eliminar una Registration:
 
-1. 以下のコマンドを実行し、Registrationのidを確認します。
+1. Obtén el id de la Registration ejecutando:
 ```
 curl localhost:1026/v2/registrations | jq
 ```
 
-2. 環境変数にRegistrationのidを設定します。  
-以下のコマンドの = 以降に先ほど取得したRegistrationのidをコピー&ペーストして実行します。  
-
+2. Asigna el id a una variable de entorno. Copia el id obtenido y pégalo después del = en el siguiente comando:
 ```
-REGISTRATION_ID=取得したRegistrationのid
+REGISTRATION_ID=id_obtenido
 ```
 
-このidを使用し`/v2/registrations/{id}`のように指定することで、DELETEで削除を行うことができます。
+Con ese id puedes referirte a la Registration en `/v2/registrations/{id}` y eliminarla con DELETE.
 
-3. 以下のコマンドを実行し、Registrationを削除します。  
-
+3. Elimina la Registration:
 ```
 curl localhost:1026/v2/registrations/${REGISTRATION_ID} -X DELETE
 ```
 
-[STEP3へ](step3.md)
+[Ir al paso 3](step3.md)

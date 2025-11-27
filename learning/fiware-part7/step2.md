@@ -1,10 +1,10 @@
-[STEP1へ](step1.md)
+[Ir al paso 1](step1.md)
 
-# 2-1 Orionが公開するREST APIを呼び出す際のログ
+# 2-1 Logs cuando Orion llama a la REST API que publica
 
-データ投入時のログ出力を確認します。
+Verificaremos la salida de logs durante la inyección de datos.
 
-以下のコマンドを実行し、データを登録します。
+Ejecuta el siguiente comando para registrar datos:
 
 ```json
 curl localhost:1026/v2/entities -s -S -H 'Content-Type: application/json' -X POST -d @- <<EOF
@@ -25,22 +25,22 @@ curl localhost:1026/v2/entities -s -S -H 'Content-Type: application/json' -X POS
 EOF
 ```
 
-以下のコマンドを実行し、ログを確認します。
+Ejecuta el siguiente comando para verificar los logs:
 
 ```
 docker logs fiware-orion
 ```
 
-![データ投入時のログ](./assets/7-4.png)
+![Logs durante la inyección de datos](./assets/7-4.png)
 
-`/v2/entities`へのPOSTリクエストを受信したことがログに記録されています。  
-また、request payloadには受信したデータが記録されており、response codeとしてAPIの返したステータスコードが記録されています。
+Se registra en el log que se recibió una solicitud POST a `/v2/entities`.  
+También, el payload de la solicitud contiene los datos recibidos, y el código de respuesta contiene el código de estado devuelto por la API.
 
-# 2-2 Orionが通知(Subscription)を送信する際のログ
+# 2-2 Logs cuando Orion envía notificaciones (Subscription)
 
-Cygnusへの通知(Notification)時のログ出力を確認します
+Verificaremos la salida de logs durante el envío de notificaciones (Notification) a Cygnus.
 
-以下のコマンドを実行し、Subscriptionを登録します。
+Ejecuta el siguiente comando para registrar una Subscription:
 
 ```json
 curl -v localhost:1026/v2/subscriptions -s -S -H 'Content-Type: application/json' -X POST -d @- <<EOF
@@ -69,48 +69,48 @@ curl -v localhost:1026/v2/subscriptions -s -S -H 'Content-Type: application/json
 EOF
 ```
 
-以下のコマンドを実行し、temperatureの値を変更します。
+Ejecuta el siguiente comando para cambiar el valor de temperature:
 
 ```
 curl localhost:1026/v2/entities/Room1/attrs/temperature/value -s -S -H 'Content-Type: text/plain' -X PUT -d 29.5
 ```
 
-以下のコマンドを実行し、ログを確認します。
+Ejecuta el siguiente comando para verificar los logs:
 
 ```
 docker logs fiware-orion
 ```
 
-![Cygnusへの通知(Notification)時のログ](./assets/7-5.png)
+![Logs durante el envío de notificación a Cygnus](./assets/7-5.png)
 
-`cygnus:5055/notify`へのPOSTリクエストを送信したことがログに記録されています。  
-また、response codeとして通知先が返したステータスコードが記録されています。
+Se registra en el log que se envió una solicitud POST a `cygnus:5055/notify`.  
+También, el código de respuesta contiene el código de estado devuelto por el destino de la notificación.
 
-# 2-3 コマンドライン引数で設定できるログ設定
+# 2-3 Configuración de logs mediante argumentos de línea de comandos
 
-コマンドライン引数で設定できるパラメータには以下のものがあります。
+Los parámetros que se pueden configurar mediante argumentos de línea de comandos son los siguientes:
 
-|コマンドライン引数|説明|
-|-|-|
-|**-logDir \<dir>**|ログファイル出力先ディレクトリを指定します。|
-|**-logAppend**|指定した場合、空のログファイルで開始するのではなく、既存のログファイルに追記されます。|
-|**-logLevel**| ・NONE (致命的なエラーメッセージを含むすべてのログを出力しません)<br>・FATAL (致命的なエラーメッセージのみ出力します)<br>・ERROR (致命的なエラーメッセージおよびエラーメッセージを出力します)<br>・WARN (致命的なエラーメッセージ、エラーメッセージおよび警告メッセージを出力します、デフォルトの設定)<br>・INFO (致命的なエラーメッセージ、エラーメッセージ、警告メッセージおよび情報メッセージを出力します)<br>・DEBUG (すべてのメッセージを出力します)<br>  [ログレベルは管理API](https://fiware-orion.readthedocs.io/en/latest/admin/management_api.html)を使用して実行時に変更することができます。|
-|**-logSummary**|ログの要約トレースを有効にできます。詳細については、[ログのドキュメント](https://fiware-orion.readthedocs.io/en/latest/admin/logs.html#summary-traces)を参照してください。|
-|**-relogAlarms**|トリガー条件が発生するたびにログを出力します。詳細については、[ログのドキュメント](https://fiware-orion.readthedocs.io/en/latest/admin/logs.html#alarms)を参照してください。|
-|**-logForHumans**|人間が見やすいように整形されたログを出力します。|
+| Argumento de línea de comandos | Descripción |
+| - | - |
+| **-logDir \<dir>** | Especifica el directorio de salida del archivo de log. |
+| **-logAppend** | Si se especifica, se añade a un archivo de log existente en lugar de comenzar con un archivo vacío. |
+| **-logLevel** | • NONE (no muestra ningún log, excepto mensajes de error fatal)<br>• FATAL (muestra solo mensajes de error fatal)<br>• ERROR (muestra mensajes de error fatal y error)<br>• WARN (muestra mensajes de error fatal, error y advertencia; configuración por defecto)<br>• INFO (muestra mensajes de error fatal, error, advertencia e información)<br>• DEBUG (muestra todos los mensajes)<br>[El nivel de log se puede cambiar en tiempo de ejecución usando la API de administración](https://fiware-orion.readthedocs.io/en/latest/admin/management_api.html). |
+| **-logSummary** | Habilita el rastreo de resumen de logs. Para más detalles, consulta la [documentación de logs](https://fiware-orion.readthedocs.io/en/latest/admin/logs.html#summary-traces). |
+| **-relogAlarms** | Muestra logs cada vez que se cumple la condición de activación. Para más detalles, consulta la [documentación de logs](https://fiware-orion.readthedocs.io/en/latest/admin/logs.html#alarms). |
+| **-logForHumans** | Muestra logs formateados de forma legible para humanos. |
 
-# 2-4 コンテナの停止・削除
+# 2-4 Detención y eliminación de contenedores
 
-起動したコンテナを停止・削除します。
+Detén y elimina los contenedores que iniciaste.
 
-1. 以下コマンドでコンテナを停止・削除します。
+1. Ejecuta el siguiente comando para detener y eliminar los contenedores:
 
    `docker compose -f fiware-part7/assets/docker-compose.yml down`
 
-2. 完了したら以下のコマンドでコンテナが停止・削除されていることを確認します。
+2. Una vez completado, verifica que los contenedores se hayan detenido y eliminado con el siguiente comando:
 
    `docker compose -f fiware-part7/assets/docker-compose.yml ps -a`
 
-   一覧に何も表示されていなければ成功です。
+   Si la lista no muestra nada, significa que fue exitoso.
 
-[終了](finish.md)
+[Finalizar](finish.md)

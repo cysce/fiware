@@ -1,85 +1,84 @@
-Part6ではFIWARE OrionのRegistration機能について学習していきます。
+En la Parte 6 aprenderemos sobre la funcionalidad Registration de FIWARE Orion.
 
-# Orionの概要
+# Resumen de Orion
 
-![Orionの概要](./assets/6-1.png)
+![Descripción general de Orion](./assets/6-1.png)
 
-# 1-1 構成の起動
+# 1-1 Inicio de la configuración
 
-今回は以下の構成を起動します。
+En esta ocasión pondremos en marcha la siguiente configuración.
 
-![全体構成図](./assets/6-2.png)
+![Diagrama general](./assets/6-2.png)
 
-以下のコマンドを実行します。
+Ejecuta el siguiente comando:
 
 ```
 docker compose -f fiware-part6/assets/docker-compose.yml up -d
 ```
 
-実行が完了したら起動していることを確認します。
+Cuando termine, verifica que los servicios estén en ejecución:
 
 ```
 docker compose -f fiware-part6/assets/docker-compose.yml ps
 ```
 
-一覧に**fiware-orionA**, **fiware-orionB**, **mongo-dbA**, **mongo-dbB**があれば成功です。
+Si en la lista aparecen **fiware-orionA**, **fiware-orionB**, **mongo-dbA**, **mongo-dbB**, la puesta en marcha fue exitosa.
 
-以下の手順でデータを登録します。
+Registra datos siguiendo estos pasos:
 
-1. FIWARE OrionAにデータを登録します。
+1. Registra datos en FIWARE OrionA:
 
 ```
 curl localhost:1026/v2/entities -s -S -H 'Content-Type: application/json' -X POST -d @fiware-part6/assets/example-ngsi-room-orionA.json
 ```
 
-2. FIWARE OrionAに投入したEntityを確認します。
+2. Verifica la Entity registrada en OrionA:
 
 ```
 curl localhost:1026/v2/entities | jq
 ```
 
-3. FIWARE OrionBにデータを登録します。
+3. Registra datos en FIWARE OrionB:
 
 ```
 curl localhost:1027/v2/entities -s -S -H 'Content-Type: application/json' -X POST -d @fiware-part6/assets/example-ngsi-room-orionB.json
 ```
 
-4. FIWARE OrionBに投入したEntityを確認します。
+4. Verifica la Entity registrada en OrionB:
 
 ```
 curl localhost:1027/v2/entities | jq
 ```
 
-# 1-2 Registrationの通信の流れ
+# 1-2 Flujo de comunicación de Registration
 
-RegistrationをOrionAに設定し、Registrationの対象にしたEntityへクエリを実行した際に、OrionBへクエリが転送される流れは、以下の図の通りとなります。
+Al configurar una Registration en OrionA y ejecutar una consulta hacia la Entity sujeta a la Registration, la consulta se reenviará a OrionB. El flujo es el siguiente:
 
-![通信の流れ](./assets/6-6.png)
+![Flujo de comunicación](./assets/6-6.png)
 
 `/v2/registration`  
-OrionAに対して、Registrationの設定を行います。
+Se configura la Registration en OrionA.
 
 `/v2/entities`  
-OrionAに対して、クエリを実行します。
+Se ejecuta la consulta en OrionA.
 
 `/v2/op/query`  
-OrionAからOrionBにクエリが転送されます。
+OrionA reenvía la consulta a OrionB.
 
-# 1-3 FIWARE OrionのRegistration機能
+# 1-3 Función Registration de FIWARE Orion
 
-FIWARE Orionにはクエリ/更新要求を転送する機能があります。転送の設定を行うことで、FIWARE Orionから別のシステム（別のNGSIに対応したシステム）で提供されるコンテキストデータを取得することができます。
+FIWARE Orion dispone de una funcionalidad para reenviar consultas y solicitudes de actualización. Al configurar el reenvío, Orion puede obtener datos de contexto que son proporcionados por otro sistema compatible con NGSI.
 
-転送が必要な大きな理由としては、以下のような点が考えられます。
-- 外部サービスが保持するデータから常に最新のデータを取得することができます
-- データ構造などは転送先で管理されるため、転送元のOrionが保持するデータの管理コストを軽減することができます
+Motivos habituales para usar el reenvío:
+- Permite obtener siempre los datos más recientes desde un servicio externo que mantiene la información.
+- La estructura y gestión de los datos puede delegarse al sistema destino, reduciendo el coste de gestión de los datos en el Orion origen.
 
-`/v2/registrations`へPOSTすることで転送の設定ができます。
+Se puede configurar el reenvío realizando un POST a `/v2/registrations`.
 
-POSTする際のbodyは以下の通りです。
+El body del POST tiene la siguiente estructura:
 
 ![RegistrationBody](./assets/6-3.png)
 
-この例では**OrionA**が**Room1**の**pressure**に対するクエリ/更新要求を受け付けた際に、
-**OrionB**にクエリ/更新要求を転送する設定です。
+En este ejemplo, cuando OrionA reciba una consulta o solicitud de actualización sobre el atributo **pressure** de **Room1**, reenviará la consulta/solicitud a **OrionB**.
 
-[STEP2へ](step2.md)
+[Ir al paso 2](step2.md)

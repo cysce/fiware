@@ -1,52 +1,52 @@
-Part9ではFIWAREコンポーネントのアクセス保護について学習していきます。
+En la Parte 9 aprenderemos sobre la protección de acceso de los componentes de FIWARE.
 
-# 1-1 FIWAREコンポーネントのアクセス保護の必要性
+# 1-1 Necesidad de proteger el acceso a los componentes FIWARE
 
-適切なFIWAREコンポーネントのアクセス保護が行われていない場合、アクセス権限を持たない第三者が悪意を持ってサーバーやシステムに侵入する行為である不正アクセスが行われ、情報の漏洩や改ざんなどの被害が出る可能性があります。
+Si no se aplica una protección de acceso adecuada a los componentes FIWARE, terceros no autorizados podrían acceder maliciosamente a servidores o sistemas (acceso no autorizado), lo que puede provocar filtraciones o alteraciones de información.
 
-これらを防ぐため、KeyrockやWilmaなどのコンポーネントを使用して、バックエンド・アプリケーションに認証および認可のセキュリティを追加し、許可されたユーザのみがOrionやRESTサービスにアクセスできるようにします。
+Para evitarlo, se utilizan componentes como Keyrock y Wilma para añadir autenticación y autorización a las aplicaciones y backend, de modo que solo usuarios autorizados puedan acceder a Orion y a otros servicios REST.
 
-# 1-2 KeyrockとWilmaの概要
+# 1-2 Resumen de Keyrock y Wilma
 
-![Keyrockの概要](./assets/9-1.png)
+![Descripción general de Keyrock](./assets/9-1.png)
 
-![Wilmaの概要](./assets/9-2.png)
+![Descripción general de Wilma](./assets/9-2.png)
 
-# 1-3 構成の起動
+# 1-3 Arranque de la configuración
 
-今回は以下の構成を起動します。
+En esta ocasión pondremos en marcha la siguiente configuración.
 
-![全体構成図](./assets/9-3.png)
+![Diagrama de configuración general](./assets/9-3.png)
 
-以下のコマンドを実行します。
+Ejecuta el siguiente comando:
 
 ```
 docker compose -f fiware-part9/assets/docker-compose.yml up -d
 ```
 
-ターミナルの処理が終了したら以下のコマンドで起動していることを確認します。
+Cuando termine, verifica que los servicios estén en ejecución:
 
 ```
 docker compose -f fiware-part9/assets/docker-compose.yml ps
 ```
 
-一覧に**fiware-orion-proxy**, **fiware-orion**, **fiware-keyrock**, **db-mongo**, **db-mysql**があれば成功です。
+Si en la lista aparecen **fiware-orion-proxy**, **fiware-orion**, **fiware-keyrock**, **db-mongo** y **db-mysql**, la puesta en marcha fue exitosa.
 
-# 1-4 KeyrockとWilmaの設定
+# 1-4 Configuración de Keyrock y Wilma
 
-手順の簡略化のため、本PartではKeyrockのGUIやAPIインターフェースを利用したユーザー、アプリケーションの登録の手順は省略しています。
+Para simplificar los pasos, en esta parte se omite la explicación de cómo registrar usuarios y aplicaciones mediante la interfaz GUI o la API de Keyrock.
 
-docker-compose.ymlによるコンテナ起動時に、以下のデータが自動的に登録されます。
+Al arrancar los contenedores con docker-compose, se registran automáticamente los siguientes datos:
 
-管理者ユーザー
-|名前|Eメール|パスワード|
-|-|-|-|
-|alice|`alice-the-admin@test.com`|test|
+Administrador
+| Nombre | E-mail | Contraseña |
+| - | - | - |
+| alice | `alice-the-admin@test.com` | test |
 
-アプリケーション
-|Key|Value|
-|-|-|
-|Client ID|tutorial-dckr-site-0000-xpresswebapp|
-|Client Secret|tutorial-dckr-site-0000-clientsecret|
+Aplicación
+| Clave | Valor |
+| - | - |
+| Client ID | tutorial-dckr-site-0000-xpresswebapp |
+| Client Secret | tutorial-dckr-site-0000-clientsecret |
 
-[STEP2へ](step2.md)
+[Ir al paso 2](step2.md)

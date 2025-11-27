@@ -1,23 +1,22 @@
-[STEP1へ](step1.md)
+[Ir al paso 1](step1.md)
 
-# 2-1 アクセスの確認
+# 2-1 Comprobación de acceso
 
-以下のコマンドを実行し、Authorizationヘッダに指定するトークンを作成します。
+Ejecuta el siguiente comando para crear el token que se especificará en el encabezado Authorization.
 
-※作成するトークンは`ClientID:Client Secret`をBase64エンコードした値になります
+※ El token que se crea es el valor de "ClientID:Client Secret" codificado en Base64
 
 ```
 echo -n "tutorial-dckr-site-0000-xpresswebapp:tutorial-dckr-site-0000-clientsecret" | openssl base64 -A
 ```
 
-次の手順で作成したトークンを使用するため、環境変数に作成したトークンを設定しておきます。
-以下のコマンドの = 以降に先ほど作成したトークンをコピー&ペーストして実行します。
+Como vas a usar el token creado en los pasos siguientes, configura una variable de entorno con el valor mostrado por el comando anterior. Sustituye lo que hay después del = por el token obtenido:
 
 ```
-TOKEN=echoで表示した値
+TOKEN=valor_mostrado_por_echo
 ```
 
-以下のコマンドを実行し、Keyrockからアクセストークンを取得します。
+A continuación, ejecuta el siguiente comando para obtener un access_token desde Keyrock:
 
 ```
 curl -iX POST \
@@ -30,45 +29,46 @@ curl -iX POST \
 
 ![Access token](./assets/9-4.png)
 
-次の手順でaccess_tokenを使用するため、環境変数にaccess_tokenを設定しておきます。  
-以下のコマンドの = 以降に先ほど取得したaccess_tokenをコピー&ペーストして実行します。  
+Copia el access_token que aparece en la respuesta y guárdalo en una variable de entorno para usarlo en los siguientes pasos:
 
 ```
-ACCESS_TOKEN=レスポンスに含まれるアクセストークン
+ACCESS_TOKEN=valor_del_access_token_en_la_respuesta
 ```
 
-以下の手順で、アクセストークンを使用したOrionへのアクセスを確認します。
+Comprueba el acceso a Orion usando el access_token:
 
-1. 以下のコマンドを実行し、正しいアクセストークンを指定した場合、Orionからデータを取得できることを確認します。
+1. Con el token correcto deberías poder obtener datos de Orion:
 
-  ```
-  curl -X GET \
-    http://localhost:1027/v2/entities \
-    -H "X-Auth-Token: ${ACCESS_TOKEN}"
-  ```
+```
+curl -X GET \
+  http://localhost:1027/v2/entities \
+  -H "X-Auth-Token: ${ACCESS_TOKEN}"
+```
 
-  空のjson配列`[]`が返ってくれば成功です。
+Si devuelve el arreglo JSON vacío `[]`, la comprobación fue exitosa.
 
-2. 以下のコマンドを実行し、間違ったアクセストークンを指定した場合、Orionからデータが取得されないことを確認します。
+2. Con un token incorrecto no se obtendrán datos; por ejemplo:
 
 ```
 curl -X GET \
   http://localhost:1027/v2/entities \
   -H "X-Auth-Token: bad_token"
 ```
-`Invalid token: access token is invalid`が出力されることを確認します。
 
-# 2-2 コンテナの停止・削除
-起動したコンテナを停止・削除します。
+Verifica que se muestre `Invalid token: access token is invalid`.
 
-1. 以下コマンドでコンテナを停止・削除します。
+# 2-2 Detención y eliminación de contenedores
+
+Detén y elimina los contenedores iniciados.
+
+1. Ejecuta el siguiente comando para detener y eliminar los contenedores:
 
    `docker compose -f fiware-part9/assets/docker-compose.yml down`
 
-2. 完了したら以下のコマンドでコンテナが停止・削除されていることを確認します。
+2. Una vez completado, verifica que los contenedores se hayan detenido y eliminado con:
 
    `docker compose -f fiware-part9/assets/docker-compose.yml ps -a`
 
-一覧に何も表示されていなければ成功です。
+Si la lista no muestra nada, la operación fue exitosa.
 
-[終了](./finish.md)
+[Finalizar](./finish.md)

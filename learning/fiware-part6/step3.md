@@ -1,26 +1,27 @@
-[STEP2へ](step2.md)
+[Ir al paso 2](step2.md)
 
-Orion Registrationにおける様々な設定に関して学習していきます。
+Aprenderemos sobre varias configuraciones en Registration de Orion.
 
-# 3-1 idPatternによる転送対象の指定
-転送を行うEntityの指定方法にidPatternを使うことができます。  
-idPatternは正規表現を使用しマッチしたEntityを対象とすることができます。
+# 3-1 Especificación del objetivo de reenvío mediante idPattern
+
+Puedes usar idPattern para especificar qué entidades serán objeto del reenvío.  
+idPattern emplea expresiones regulares para apuntar a las entidades que coincidan.
 
 ![idPattern](./assets/6-5.png)
 
-今回の例では`".*"`を指定することで全てのidを対象にしています。
+En este ejemplo, al especificar `".*"` se seleccionan todos los ids.
 
-# 3-2 Registrationの設定前の確認
+# 3-2 Comprobación antes de configurar la Registration
 
-OrionAに対して、以下のコマンドを実行し、データが取得できないことを確認します。
+Ejecuta el siguiente comando contra OrionA y comprueba que no se obtienen datos:
 
 ```
 curl localhost:1026/v2/entities/Room1/attrs/pressure?type=Room -s -S -H 'Accept: application/json' | jq
 ```
 
-# 3-3 Registrationの設定
+# 3-3 Configuración de la Registration
 
-以下のコマンドでOrionAに対して、Registrationの設定を行います。
+Configura la Registration en OrionA con el siguiente comando:
 
 ```json
 curl localhost:1026/v2/registrations -s -S -H 'Content-Type: application/json' -H 'Accept: application/json' -X POST -d @- <<EOF
@@ -46,32 +47,32 @@ curl localhost:1026/v2/registrations -s -S -H 'Content-Type: application/json' -
 EOF
 ```
 
-# 3-4 OrionAからOrionBへの転送
+# 3-4 Reenvío de OrionA a OrionB
 
-Registrationの設定完了後に、OrionAに対して、以下のコマンドを再度実行します。
+Tras completar la configuración de la Registration, vuelve a ejecutar el siguiente comando contra OrionA:
 
 ```
 curl localhost:1026/v2/entities/Room1/attrs/pressure?type=Room -s -S -H 'Accept: application/json' | jq
 ```
 
-クエリがOrionBに転送され、データが取得されることを確認します。
+Verifica que la consulta se reenvía a OrionB y que se obtienen los datos.
 
 ![ResponseBody](./assets/6-4.png)
 
-Registrationsに関する情報は公式の[Registration Operations](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#registration-operations)に記載されています。
+La información sobre Registrations está documentada en la sección oficial de [Registration Operations](https://github.com/telefonicaid/fiware-orion/blob/master/doc/manuals/orion-api.md#registration-operations).
 
-# 3-5 コンテナの停止・削除
+# 3-5 Detención y eliminación de contenedores
 
-起動したコンテナを停止・削除します。
+Detén y elimina los contenedores que iniciaste.
 
-1. 以下コマンドでコンテナを停止・削除します。
+1. Ejecuta el siguiente comando para detener y eliminar los contenedores:
 
    `docker compose -f fiware-part6/assets/docker-compose.yml down`
 
-2. 完了したら以下のコマンドでコンテナが停止・削除されていることを確認します。
+2. Una vez completado, verifica que los contenedores se hayan detenido y eliminado con el siguiente comando:
 
    `docker compose -f fiware-part6/assets/docker-compose.yml ps -a`
 
-   一覧に何も表示されていなければ成功です。
+   Si la lista no muestra nada, significa que fue exitoso.
 
-[終了](finish.md)
+[Finalizar](finish.md)

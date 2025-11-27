@@ -1,4 +1,4 @@
 FIWARE OrionのRegistration機能について学習していきます。
 
-[STEP1へ](step1.md)  
-[TOPへ](../README.md)
+[Ir al paso 1](step1.md)  
+[Ir al inicio](../README.md)

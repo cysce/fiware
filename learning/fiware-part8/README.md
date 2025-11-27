@@ -1,4 +1,4 @@
-IoTAgentを使ったデバイスからのデータ収集について学習していきます。
+Aprenderemos sobre la recopilación de datos de dispositivos utilizando IoTAgent.
 
-[STEP1へ](step1.md)  
-[TOPへ](../README.md)
+[Ir al paso 1](step1.md)  
+[Ir al inicio](../README.md)

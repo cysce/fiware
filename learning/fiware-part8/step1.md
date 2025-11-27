@@ -1,43 +1,43 @@
-part8ではIoTAgentを使ったデバイスからのデータ収集について学習していきます。
+En la Parte 8 aprenderemos sobre la recopilación de datos desde dispositivos utilizando IoTAgent.
 
-# 1-1 IoTAgentの概要
+# 1-1 Resumen de IoTAgent
 
-![IoTAgentの概要](./assets/8-1.png)
+![Resumen de IoTAgent](./assets/8-1.png)
 
-# 1-2 構成の起動
+# 1-2 Arranque de la configuración
 
-今回は以下の構成を起動します。
+En esta ocasión pondremos en marcha la siguiente configuración.
 
-![全体構成図](./assets/8-2.png)
+![Diagrama general](./assets/8-2.png)
 
-以下のコマンドを実行します。
+Ejecuta el siguiente comando:
 
 ```
 docker compose -f fiware-part8/assets/docker-compose.yml up -d
 ```
 
-ターミナルの処理が終了したら以下のコマンドで起動していることを確認します。
+Cuando termine el proceso en la terminal, verifica que los servicios estén en ejecución con:
 
 ```
 docker compose -f fiware-part8/assets/docker-compose.yml ps
 ```
 
-一覧に**fiware-orion**, **db-mongo**, **fiware-iot-agent**, **dummy-device**があれば成功です。
+Si en la lista aparecen **fiware-orion**, **db-mongo**, **fiware-iot-agent** y **dummy-device**, la puesta en marcha fue exitosa.
 
-# 1-3 FIWARE IoTAgentの機能
+# 1-3 Funcionalidad de FIWARE IoTAgent
 
-IoTAgentは、IoTDevice固有のプロトコルを[NGSIv2](../fiware-part2/step2.md)（FIWARE標準データ交換モデル）に変換します。
+IoTAgent convierte los protocolos específicos de los dispositivos IoT al [NGSIv2](../fiware-part2/step2.md) (modelo de intercambio de datos estándar de FIWARE).
 
-IoTDeviceをFIWAREに接続する場合に必要となります。  
-※IoTDeviceがNGSIAPIをネイティブにサポートしている場合、IoTAgentは必要ありません
+Es necesario cuando se quiere conectar dispositivos IoT a FIWARE.  
+※ Si el dispositivo IoT soporta la API NGSI de forma nativa, no se requiere IoTAgent.
 
-### IoTDevice固有のプロトコルの例
+### Ejemplos de protocolos específicos de dispositivos IoT
 
-|プロトコル|説明|
+| Protocolo | Descripción |
 | - | - |
-|MQTT|Publish/Subscribe モデルのメッセージングにより、非同期に1対多の通信ができるプロトコルです。シンプルかつ軽量に設計されているため、IoTの実現に適しています。|
-|Ultralight 2.0|ネットワーク帯域幅やメモリが制限された、制約のあるデバイスとの通信を目的とした、テキストベースの軽量プロトコルです。|
+| MQTT | Protocolo basado en mensajería Publish/Subscribe que permite comunicación asíncrona uno-a-muchos. Es sencillo y ligero, adecuado para IoT. |
+| Ultralight 2.0 | Protocolo ligero basado en texto diseñado para comunicarse con dispositivos con ancho de banda o memoria limitados. |
 
-![プロトコル例](./assets/8-3.png)
+![Ejemplos de protocolos](./assets/8-3.png)
 
-[STEP2へ](step2.md)
+[Ir al paso 2](step2.md)

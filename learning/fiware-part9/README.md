@@ -1,4 +1,4 @@
-FIWAREコンポーネントのアクセス保護について学習していきます。
+Aprenderemos sobre la protección de acceso para los componentes FIWARE.
 
-[STEP1へ](step1.md)  
-[TOPへ](../README.md)
+[Ir al paso 1](step1.md)  
+[Ir al inicio](../README.md)
